@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -22,21 +23,21 @@ const Grid = styled.div`
   border-collapse: collapse;
   border: solid 3px #080808;
 `
-const Circle = styled.div`
+const CircleBlack = styled.div`
   width: 54px;
   height: 54px;
   background-color: #000;
   border: solid 3px #080808;
   border-radius: 50%;
 `
-const Circle2 = styled.div`
+const CircleWhite = styled.div`
   width: 54px;
   height: 54px;
   background-color: #fffbfb;
   border: solid 3px #080808;
   border-radius: 50%;
 `
-const Circle3 = styled.div`
+const CircleClear = styled.div`
   width: 54px;
   height: 54px;
   background-color: #07b81e;
@@ -45,7 +46,7 @@ const Circle3 = styled.div`
 
 const Home: NextPage = () => {
   //prettier-ignore
-  const board = [
+  const [board, setBoard] = useState ([
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -54,22 +55,56 @@ const Home: NextPage = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-  ]
+  ])
+  const [turn, setTurn] = useState(1)
+  const hit = (x: number, y: number) => {
+    const newBoard: number[][] = JSON.parse(JSON.stringify(board))
+
+    let turnChange = turn
+    if (board[y][x] !== 0 && turnChange === board[y][x]) {
+      turnChange += 0
+    } else if (board[y][x] === 1 && turnChange === 2) {
+      turnChange -= 1
+    } else if (board[y][x] === 2 && turnChange === 1) {
+      turnChange += 1
+    } else if (turn === 1 || turn === 0) {
+      turnChange += 1
+    } else if (turn == 2) {
+      turnChange -= 1
+    }
+    newBoard[y][x] = turnChange //実際に表示される//
+
+    board[y][x] = turnChange
+    setBoard(newBoard)
+    setTurn(turnChange)
+    console.log(board[y][x])
+  }
+
   return (
     <Container>
       <Head>
         <title>Create Next App</title>
       </Head>
       <Backs>
-        {board.map((row, y) => (
-          <tr key={y}>
-            {row.map((color, x) => (
-              <th key={x}>
-                <Grid>{color === 0 ? <Circle3 /> : color === 1 ? <Circle2 /> : <Circle />}</Grid>
-              </th>
-            ))}
-          </tr>
-        ))}
+        <tbody>
+          {board.map((row, y) => (
+            <tr key={y}>
+              {row.map((color, x) => (
+                <th key={x}>
+                  <Grid onClick={() => hit(x, y)}>
+                    {color === 0 ? (
+                      <CircleClear />
+                    ) : color === 1 ? (
+                      <CircleBlack />
+                    ) : (
+                      <CircleWhite />
+                    )}
+                  </Grid>
+                </th>
+              ))}
+            </tr>
+          ))}
+        </tbody>
       </Backs>
     </Container>
   )
