@@ -6,30 +6,15 @@ const Container = styled.div`
   height: 100vh;
   min-height: 100vh;
   padding: 0 0.5rem;
-  background-color: #19e606;
+  background-color: #e69f06;
 `
 const Backs = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
   gap: 0;
-  background-color: #fff;
+  background-color: #07b81e;
   transform: translate(-50%, -50%);
-
-  th {
-    position: sticky;
-    top: 0;
-    left: 0;
-    padding: 0;
-  }
-
-  table {
-    display: table;
-    width: 480px;
-    height: 480px;
-    table-layout: fixed;
-    border-collapse: collapse;
-  }
 `
 
 const Grid = styled.div`
@@ -41,353 +26,50 @@ const Circle = styled.div`
   width: 54px;
   height: 54px;
   background-color: #000;
+  border: solid 3px #080808;
+  border-radius: 50%;
+`
+const Circle2 = styled.div`
+  width: 54px;
+  height: 54px;
+  background-color: #fffbfb;
+  border: solid 3px #080808;
+  border-radius: 50%;
+`
+const Circle3 = styled.div`
+  width: 54px;
+  height: 54px;
+  background-color: #07b81e;
   border-radius: 50%;
 `
 
 const Home: NextPage = () => {
+  //prettier-ignore
+  const board = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 2, 0, 0, 0],
+    [0, 0, 0, 2, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+  ]
   return (
     <Container>
       <Head>
         <title>Create Next App</title>
       </Head>
       <Backs>
-        <table>
-          <tr>
-            <Grid>
-              <Circle />
-            </Grid>
-
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
+        {board.map((row, y) => (
+          <tr key={y}>
+            {row.map((color, x) => (
+              <th key={x}>
+                <Grid>{color === 0 ? <Circle3 /> : color === 1 ? <Circle2 /> : <Circle />}</Grid>
+              </th>
+            ))}
           </tr>
-          <tr>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-          </tr>
-          <tr>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-          </tr>
-          <tr>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-          </tr>
-          <tr>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-          </tr>
-          <tr>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-          </tr>
-          <tr>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-          </tr>
-          <tr>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-            <th>
-              <Grid>
-                <Circle />
-              </Grid>
-            </th>
-          </tr>
-        </table>
+        ))}
       </Backs>
     </Container>
   )
