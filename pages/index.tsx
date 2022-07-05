@@ -62,32 +62,103 @@ const Home: NextPage = () => {
 
     //すでに置かれている上には置けない
     let turnChange = turn
+    const horizontal = [-1, 0, 1]
+    const vercical = [-1, 0, 1]
+    let end = 0
 
-    if (board[y][x] !== 0) {
-      turnChange += 0
-    } else if (board[y][x] === 1 && turnChange === 2) {
-      turnChange -= 1
-      newBoard[y][x] = turnChange //実際に表示される//
-      setBoard(newBoard) //ボードに変更を保存
-      setTurn(turnChange) //ターンを保存
-    } else if (board[y][x] === 2 && turnChange === 1) {
-      turnChange += 1
-      newBoard[y][x] = turnChange
-      setBoard(newBoard)
-      setTurn(turnChange)
-    } else if (turn === 1 || turn === 0) {
-      turnChange += 1
-      newBoard[y][x] = turnChange
-      setBoard(newBoard)
-      setTurn(turnChange)
-    } else if (turn == 2) {
-      turnChange -= 1
-      newBoard[y][x] = turnChange //実際に表示される//
-      setBoard(newBoard) //ボードに変更を保存
-      setTurn(turnChange) //ターンを保存
+    for (let a = 0; a < 3 && end === 0; a++) {
+      for (let s = 0; s < 3 && end === 0; s++) {
+        //なんでiとboard[y + vercical[a]][x + horizontal[s] が同値にならない？
+        if (y !== 0) {
+          if (board[y + vercical[a]][x + horizontal[s]] === turnChange && board[y][x] === 0) {
+            if (board[y][x] !== 0) {
+              console.log()
+              //意思が置いてあるところに置いた時の想定
+            } else if (board[y][x] === 1 && turnChange === 2) {
+              console.log(turnChange)
+              turnChange -= 1
+              end += 1
+              newBoard[y][x] = turnChange //実際に表示される//
+              setBoard(newBoard) //ボードに変更を保存
+              setTurn(turnChange) //ターンを保存
+              console.log(newBoard[y][x])
+            } else if (board[y][x] === 2 && turnChange === 1) {
+              console.log(turnChange)
+              turnChange += 1
+              end += 1
+              newBoard[y][x] = turnChange
+              setBoard(newBoard)
+              setTurn(turnChange)
+              console.log(newBoard[y][x])
+              //ここから石が置かれていないところに置いた時の想定
+            } else if (turnChange === 1) {
+              console.log(turnChange)
+              turnChange += 1
+              end += 1
+              newBoard[y][x] = turnChange
+              setBoard(newBoard)
+              setTurn(turnChange)
+              console.log(newBoard[y][x])
+            } else if (turnChange == 2) {
+              console.log(turnChange)
+              turnChange -= 1
+              end += 1
+              newBoard[y][x] = turnChange
+              setBoard(newBoard)
+              setTurn(turnChange)
+              console.log(newBoard[y][x])
+            }
+            //周りに敵石がないときに置けなくする
+          }
+        }
+      }
+      //一番上に駒を置いたとき。長くなるが今回はとりあえず上の操作をコピペ
     }
-
-    //周りに敵石がないときに置けなくする
+    for (let c = 1; c < 3 && end === 0; c++) {
+      for (let d = 0; d < 3 && end === 0; d++) {
+        if (y === 0) {
+          if (board[y + c][x + d] === turnChange && board[y][x] === 0) {
+            if (board[y][x] !== 0) {
+              console.log()
+              //意思が置いてあるところに置いた時の想定
+            } else if (board[y][x] === 1 && turnChange === 2) {
+              console.log(turnChange)
+              turnChange -= 1
+              end += 1
+              newBoard[y][x] = turnChange //実際に表示される//
+              setBoard(newBoard) //ボードに変更を保存
+              setTurn(turnChange) //ターンを保存
+              console.log(newBoard[y][x])
+            } else if (board[y][x] === 2 && turnChange === 1) {
+              console.log(turnChange)
+              turnChange += 1
+              end += 1
+              newBoard[y][x] = turnChange
+              setBoard(newBoard)
+              setTurn(turnChange)
+              console.log(newBoard[y][x])
+              //ここから石が置かれていないところに置いた時の想定
+            } else if (turnChange === 1) {
+              console.log(turnChange)
+              turnChange += 1
+              end += 1
+              newBoard[y][x] = turnChange
+              setBoard(newBoard)
+              setTurn(turnChange)
+              console.log(newBoard[y][x])
+            } else if (turnChange == 2) {
+              console.log(turnChange)
+              turnChange -= 1
+              end += 1
+              newBoard[y][x] = turnChange
+              setBoard(newBoard)
+              setTurn(turnChange)
+              console.log(newBoard[y][x])
+            }
+          }
+        }
+      }
+    }
   }
 
   return (
