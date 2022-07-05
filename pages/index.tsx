@@ -60,24 +60,34 @@ const Home: NextPage = () => {
   const hit = (x: number, y: number) => {
     const newBoard: number[][] = JSON.parse(JSON.stringify(board))
 
+    //すでに置かれている上には置けない
     let turnChange = turn
-    if (board[y][x] !== 0 && turnChange === board[y][x]) {
+
+    if (board[y][x] !== 0) {
       turnChange += 0
     } else if (board[y][x] === 1 && turnChange === 2) {
       turnChange -= 1
+      newBoard[y][x] = turnChange //実際に表示される//
+      setBoard(newBoard) //ボードに変更を保存
+      setTurn(turnChange) //ターンを保存
     } else if (board[y][x] === 2 && turnChange === 1) {
       turnChange += 1
+      newBoard[y][x] = turnChange
+      setBoard(newBoard)
+      setTurn(turnChange)
     } else if (turn === 1 || turn === 0) {
       turnChange += 1
+      newBoard[y][x] = turnChange
+      setBoard(newBoard)
+      setTurn(turnChange)
     } else if (turn == 2) {
       turnChange -= 1
+      newBoard[y][x] = turnChange //実際に表示される//
+      setBoard(newBoard) //ボードに変更を保存
+      setTurn(turnChange) //ターンを保存
     }
-    newBoard[y][x] = turnChange //実際に表示される//
 
-    board[y][x] = turnChange
-    setBoard(newBoard)
-    setTurn(turnChange)
-    console.log(board[y][x])
+    //周りに敵石がないときに置けなくする
   }
 
   return (
