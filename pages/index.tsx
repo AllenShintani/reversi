@@ -56,7 +56,7 @@ const Home: NextPage = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ])
-  const [turn, setTurn] = useState(1)
+  const [turn, setTurn] = useState(2)
   const hit = (x: number, y: number) => {
     const newBoard: number[][] = JSON.parse(JSON.stringify(board))
 
@@ -92,34 +92,36 @@ const Home: NextPage = () => {
               console.log(newBoard[y][x])
               //ここから石が置かれていないところに置いた時の想定
             } else if (turnChange === 1) {
-              console.log(turnChange)
+              console.log(y + vercical[a])
               turnChange += 1
               end += 1
               newBoard[y][x] = turnChange
               setBoard(newBoard)
               setTurn(turnChange)
-              console.log(newBoard[y][x])
+              console.log(x + horizontal[s])
             } else if (turnChange == 2) {
-              console.log(turnChange)
+              console.log(y + vercical[a])
               turnChange -= 1
               end += 1
               newBoard[y][x] = turnChange
               setBoard(newBoard)
               setTurn(turnChange)
-              console.log(newBoard[y][x])
+              console.log(x + horizontal[s])
             }
             //周りに敵石がないときに置けなくする
           }
         }
       }
-      //一番上に駒を置いたとき。長くなるが今回はとりあえず上の操作をコピペ
+      //(y=0)一番上に駒を置いたとき。長くなるが今回はとりあえず上の操作をコピペ
     }
     for (let c = 1; c < 3 && end === 0; c++) {
       for (let d = 0; d < 3 && end === 0; d++) {
         if (y === 0) {
           if (board[y + c][x + d] === turnChange && board[y][x] === 0) {
+            console.log(y + vercical[c])
+            console.log(x + horizontal[d])
+
             if (board[y][x] !== 0) {
-              console.log()
               //意思が置いてあるところに置いた時の想定
             } else if (board[y][x] === 1 && turnChange === 2) {
               console.log(turnChange)
@@ -155,6 +157,69 @@ const Home: NextPage = () => {
               setTurn(turnChange)
               console.log(newBoard[y][x])
             }
+          }
+        }
+      }
+    }
+    //挟んだら色変わる
+    for (let i = 0; i <= 7; i++) {
+      //縦
+      if (board[i][x] === turnChange && board[i][x] !== 0) {
+        if (y < i) {
+          console.log(i)
+          for (let s = y; s !== i && board[s + 1][x] !== 0; s++) {
+            console.log(s)
+            newBoard[s][x] = turnChange
+            setBoard(newBoard)
+          }
+        } else if (y > i) {
+          console.log(y)
+          for (let j = y; j !== i && board[j - 1][x] !== 0; j--) {
+            newBoard[j][x] = turnChange
+            setBoard(newBoard)
+          }
+        }
+      }
+      //横
+      if (board[y][i] === turnChange && board[y][i] !== 0) {
+        if (x < i) {
+          for (let s = x; s !== i; s++) {
+            newBoard[y][s] = turnChange
+            setBoard(newBoard)
+          }
+        } else if (x > i) {
+          for (let s = x; s !== i; s--) {
+            newBoard[y][s] = turnChange
+            setBoard(newBoard)
+          }
+        }
+      } //斜め
+      if (
+        (board[y + i][x + i] === turnChange ||
+          board[y - i][x - i] ||
+          board[y + i][x - i] ||
+          board[y - i][x + i]) &&
+        board[y + i][x + i] !== 0
+      ) {
+        if (y < i && x < i) {
+          for (let s = y, j = x; s !== i; s++, j++) {
+            newBoard[s + 1][j + 1] = turnChange
+            setBoard(newBoard)
+          }
+        } else if (y > i && x > i) {
+          for (let s = y, j = x; s !== i; s--, j--) {
+            newBoard[s - 1][j - 1] = turnChange
+            setBoard(newBoard)
+          }
+        } else if (y > i && x < i) {
+          for (let s = y, j = x; s !== i; s--, j++) {
+            newBoard[s - 1][j + 1]
+            setBoard(newBoard)
+          }
+        } else if (y < i && x > i) {
+          for (let s = y, j = x; s !== i; s++, j--) {
+            newBoard[s + 1][j - 1]
+            setBoard(newBoard)
           }
         }
       }
