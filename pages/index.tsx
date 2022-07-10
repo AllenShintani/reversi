@@ -165,16 +165,14 @@ const Home: NextPage = () => {
     for (let i = 0; i <= 7; i++) {
       //縦
       if (board[i][x] === turnChange && board[i][x] !== 0) {
+        console.log(i)
         if (y < i) {
-          console.log(i)
-          for (let s = y; s !== i && board[s + 1][x] !== 0; s++) {
-            console.log(s)
+          for (let s = y; s !== i; s++) {
             newBoard[s][x] = turnChange
             setBoard(newBoard)
           }
         } else if (y > i) {
-          console.log(y)
-          for (let j = y; j !== i && board[j - 1][x] !== 0; j--) {
+          for (let j = y; j !== i; j--) {
             newBoard[j][x] = turnChange
             setBoard(newBoard)
           }
@@ -194,35 +192,6 @@ const Home: NextPage = () => {
           }
         }
       } //斜め
-      if (
-        (board[y + i][x + i] === turnChange ||
-          board[y - i][x - i] ||
-          board[y + i][x - i] ||
-          board[y - i][x + i]) &&
-        board[y + i][x + i] !== 0
-      ) {
-        if (y < i && x < i) {
-          for (let s = y, j = x; s !== i; s++, j++) {
-            newBoard[s + 1][j + 1] = turnChange
-            setBoard(newBoard)
-          }
-        } else if (y > i && x > i) {
-          for (let s = y, j = x; s !== i; s--, j--) {
-            newBoard[s - 1][j - 1] = turnChange
-            setBoard(newBoard)
-          }
-        } else if (y > i && x < i) {
-          for (let s = y, j = x; s !== i; s--, j++) {
-            newBoard[s - 1][j + 1]
-            setBoard(newBoard)
-          }
-        } else if (y < i && x > i) {
-          for (let s = y, j = x; s !== i; s++, j--) {
-            newBoard[s + 1][j - 1]
-            setBoard(newBoard)
-          }
-        }
-      }
     }
   }
 
