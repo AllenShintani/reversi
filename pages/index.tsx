@@ -56,11 +56,14 @@ const Home: NextPage = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ])
-  const [turn, setTurn] = useState(1)
+  const [turn, setTurn] = useState(2)
   const hit = (x: number, y: number) => {
     const newBoard: number[][] = JSON.parse(JSON.stringify(board))
 
-    //すでに置かれている上には置けない
+    let yUp = 0
+    let yBt = 0
+    let xUp = 0
+    let xBt = 0
     let turnChange = turn
 
     //ターンを変える
@@ -79,101 +82,157 @@ const Home: NextPage = () => {
       if (newBoard[y][x] === 0) {
         newBoard[y][x] = turnChange
 
-        return yUpper()
+        return UpDown()
       }
-
-      // yより位置が↑、↓、ｘより↑、↓、ｙより↑でｘより↑、ｙより↑でｘより↓、yより↓でxより↑、yより↓でxより↓、8通り
     }
+
+    //下の内容のどこを通るか通らないか決める
+    function UpDown() {
+      if (y - 1 >= 0 && yUp === 0) {
+        yUpper()
+      }
+      if (y + 1 <= 7 && yBt === 0) {
+        yBottom()
+      }
+      rightLeft()
+    }
+
+    function rightLeft() {
+      console.log(turnChange)
+      if (x - 1 >= 0 && xUp === 0) {
+        console.log(turnChange)
+        xUpper()
+      }
+      if (x + 1 <= 7 && xBt === 0) {
+        console.log(turnChange)
+        xBottom()
+      }
+      return setBoard(newBoard)
+    }
+
+    // yより位置が↑、↓、ｘより↑、↓、ｙより↑でｘより↑、ｙより↑でｘより↓、yより↓でxより↑、yより↓でxより↓、8通り
+
     // y > i、
     function yUpper() {
-      for (let i = y - 2, end = 0; i >= 0 && end === 0; i--) {
-        console.log(turnChange)
-        if (newBoard[i][x] === 0) {
+      yUp += 1
+      let roop = y - 2
+      console.log(turnChange)
+      while (
+        newBoard[y - 1][x] !== turnChange &&
+        newBoard[y - 1][x] !== 0 &&
+        roop >= 0 &&
+        newBoard[roop][x] !== 0
+      ) {
+        //挟まったのを確認！roopはさかのぼる!
+        if (newBoard[roop][x] === turnChange) {
+          for (; roop <= y - 1; roop++) {
+            newBoard[roop][x] = turnChange
+          }
           break
         }
-        //↓ではyとiの間が空白でも染まってしまう
-        if (newBoard[i][x] === turnChange) {
-          for (let s = 1; i + s <= y - 1; s++) {
-            console.log(turnChange)
-            //これで空白なら染まらない
-            if (newBoard[i + s][x] !== 0) {
-              end += 1
-              newBoard[i + s][x] = turnChange
-            }
-          }
-        }
+        roop -= 1
       }
+
       setBoard(newBoard)
-      yBottom()
+      UpDown()
       return setBoard(newBoard)
     }
     //y < i
     function yBottom() {
-      console.log(turnChange)
-      for (let i = y + 2, end = 0; i <= 7 && end === 0; i++) {
-        if (newBoard[i][x] === 0) {
+      yBt += 1
+      let roop = y + 2
+      while (
+        newBoard[y + 1][x] !== turnChange &&
+        newBoard[y + 1][x] !== 0 &&
+        roop <= 7 &&
+        newBoard[roop][x] !== 0
+      ) {
+        if (newBoard[roop][x] === turnChange) {
+          for (; roop >= y + 1; roop--) {
+            newBoard[roop][x] = turnChange
+          }
           break
         }
-        console.log(turnChange)
-        if (newBoard[i][x] === turnChange) {
-          for (let s = 1; i - s >= y + 1; s++) {
-            console.log(turnChange)
-            if (newBoard[i - s][x] !== 0) {
-              end += 1
-              newBoard[i - s][x] = turnChange
-            }
-          }
-        }
+        roop += 1
       }
       setBoard(newBoard)
-      xUpper()
+      UpDown()
       return setBoard(newBoard)
     }
-    //x < i
-    function xUpper() {
-      for (let i = x + 2, end = 0; i <= 7 && end === 0; i++) {
-        console.log(turnChange)
 
-        //↓ではyとiの間が空白でも染まってしまう
-        if (newBoard[y][i] === turnChange) {
-          for (let s = 1; i - s >= x + 1; s++) {
-            console.log(turnChange)
-            //これで空白なら染まらない
-            if (newBoard[y][i - s] !== 0) {
-              end += 1
-              newBoard[y][i - s] = turnChange
-            }
+    //x < i
+    function xBottom() {
+      console.log(turnChange)
+      xBt += 1
+      let roop = x + 2
+      while (
+        newBoard[y][x + 1] !== turnChange &&
+        newBoard[y][x + 1] !== 0 &&
+        roop <= 7 &&
+        newBoard[y][roop] !== 0
+      ) {
+        if (newBoard[y][roop] === turnChange) {
+          for (; roop >= x + 1; roop--) {
+            newBoard[y][roop] = turnChange
           }
+          break
         }
+        roop += 1
       }
+
       setBoard(newBoard)
-      xBottom()
+      rightLeft()
       return setBoard(newBoard)
     }
     //x > i
-    function xBottom() {
+    function xUpper() {
+      let roop = x - 2
       console.log(turnChange)
-      for (let i = x - 2, end = 0; i >= 0 && end === 0; i--) {
-        if (newBoard[y][i] === 0) {
+      xUp += 1
+      while (
+        newBoard[y][x - 1] !== turnChange &&
+        newBoard[y][x - 1] !== 0 &&
+        roop >= 0 &&
+        newBoard[y][roop] !== 0
+      ) {
+        //挟まったのを確認！roopはさかのぼる!
+        if (newBoard[y][roop] === turnChange) {
+          for (; roop <= x - 1; roop++) {
+            newBoard[y][roop] = turnChange
+          }
           break
         }
-        console.log(turnChange)
-        if (newBoard[y][i] === turnChange) {
-          for (let s = 1; i + s <= x - 1; s++) {
-            console.log(turnChange)
-            if (newBoard[y][i + s] !== 0) {
+        roop -= 1
+      }
+
+      console.log(turnChange)
+      setBoard(newBoard)
+      rightLeft()
+      return setBoard(newBoard)
+    }
+    //斜め
+    //y > i, x > i
+    function rightBottom() {
+      if (x >= y) {
+        for (let i = y - 2, j = x - 2, end = 0; i >= 0; i--, j--) {
+          console.log(turnChange)
+          if (newBoard[i][j] === 0) {
+            console.log(i)
+            console.log(j)
+            break
+          }
+          if (newBoard[i][j] === turnChange) {
+            for (let s = 1; s + i < y; s++) {
+              console.log(turnChange)
               end += 1
-              newBoard[y][i + s] = turnChange
+              newBoard[i + s][j + s] = turnChange
+              setBoard(newBoard)
             }
           }
         }
       }
-      console.log(turnChange)
-      setBoard(newBoard)
-
       return setBoard(newBoard)
     }
-    //斜め
 
     console.log(turnChange)
     if (board[y][x] === 0) {
