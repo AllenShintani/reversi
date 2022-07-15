@@ -64,6 +64,10 @@ const Home: NextPage = () => {
     let yBt = 0
     let xUp = 0
     let xBt = 0
+    let rB = 0
+    const rU = 0
+    const lB = 0
+    const lU = 0
     let turnChange = turn
 
     //ターンを変える
@@ -107,7 +111,18 @@ const Home: NextPage = () => {
         console.log(turnChange)
         xBottom()
       }
+      console.log(turnChange)
+      rightDiagonal()
       return setBoard(newBoard)
+    }
+
+    function rightDiagonal() {
+      console.log(rB)
+      if (x + 1 <= 7 && y + 1 <= 7 && rB === 0) {
+        console.log(turnChange)
+        rightBottom()
+        return setBoard(newBoard)
+      }
     }
 
     // yより位置が↑、↓、ｘより↑、↓、ｙより↑でｘより↑、ｙより↑でｘより↓、yより↓でxより↑、yより↓でxより↓、8通り
@@ -213,24 +228,31 @@ const Home: NextPage = () => {
     //斜め
     //y > i, x > i
     function rightBottom() {
-      if (x >= y) {
-        for (let i = y - 2, j = x - 2, end = 0; i >= 0; i--, j--) {
-          console.log(turnChange)
-          if (newBoard[i][j] === 0) {
-            console.log(i)
-            console.log(j)
-            break
+      console.log(turnChange)
+      let roopVertical = y - 2
+      let roopHorizontal = x - 2
+      rB += 1
+      while (
+        newBoard[y - 1][x - 1] !== 0 &&
+        newBoard[y - 1][x - 1] !== turnChange &&
+        newBoard[roopVertical][roopHorizontal] !== 0
+      ) {
+        console.log(rB)
+        if (newBoard[roopVertical][roopHorizontal] === turnChange) {
+          console.log(rB)
+          for (let i = roopVertical, j = roopHorizontal; j <= x - 1; i++, j++) {
+            newBoard[i][j] = turnChange
+            console.log(rB)
           }
-          if (newBoard[i][j] === turnChange) {
-            for (let s = 1; s + i < y; s++) {
-              console.log(turnChange)
-              end += 1
-              newBoard[i + s][j + s] = turnChange
-              setBoard(newBoard)
-            }
-          }
+          break
         }
+        console.log(rB)
+        roopHorizontal -= 1
+        roopVertical -= 1
       }
+      console.log(turnChange)
+      setBoard(newBoard)
+      rightDiagonal()
       return setBoard(newBoard)
     }
 
