@@ -65,8 +65,8 @@ const Home: NextPage = () => {
     let xUp = 0
     let xBt = 0
     let rB = 0
-    const rU = 0
-    const lB = 0
+    let rU = 0
+    let lB = 0
     const lU = 0
     let turnChange = turn
 
@@ -118,11 +118,24 @@ const Home: NextPage = () => {
 
     function rightDiagonal() {
       console.log(rB)
-      if (x + 1 <= 7 && y + 1 <= 7 && rB === 0) {
+      if (rB === 0) {
         console.log(turnChange)
         rightBottom()
-        return setBoard(newBoard)
       }
+      if (rU === 0) {
+        rightUpper()
+      }
+      console.log(turnChange)
+      leftDiagonal()
+    }
+
+    function leftDiagonal() {
+      console.log(turnChange)
+      if (lB === 0) {
+        console.log(turnChange)
+        leftBottom()
+      }
+      return setBoard(newBoard)
     }
 
     // yより位置が↑、↓、ｘより↑、↓、ｙより↑でｘより↑、ｙより↑でｘより↓、yより↓でxより↑、yより↓でxより↓、8通り
@@ -228,7 +241,6 @@ const Home: NextPage = () => {
     //斜め
     //y > i, x > i
     function rightBottom() {
-      console.log(turnChange)
       let roopVertical = y - 2
       let roopHorizontal = x - 2
       rB += 1
@@ -237,26 +249,74 @@ const Home: NextPage = () => {
         newBoard[y - 1][x - 1] !== turnChange &&
         newBoard[roopVertical][roopHorizontal] !== 0
       ) {
-        console.log(rB)
         if (newBoard[roopVertical][roopHorizontal] === turnChange) {
-          console.log(rB)
           for (let i = roopVertical, j = roopHorizontal; j <= x - 1; i++, j++) {
             newBoard[i][j] = turnChange
-            console.log(rB)
           }
           break
         }
-        console.log(rB)
+
         roopHorizontal -= 1
         roopVertical -= 1
       }
-      console.log(turnChange)
+
       setBoard(newBoard)
       rightDiagonal()
       return setBoard(newBoard)
     }
+    //y < i, x > i
+    function rightUpper() {
+      rU += 1
+      let roopVertical = y + 2
+      let roopHorizontal = x - 2
 
-    console.log(turnChange)
+      while (
+        newBoard[y + 1][x - 1] !== 0 &&
+        newBoard[y + 1][x - 1] !== turnChange &&
+        newBoard[roopVertical][roopHorizontal] !== 0
+      ) {
+        if (newBoard[roopVertical][roopHorizontal] === turnChange) {
+          for (let i = roopVertical, j = roopHorizontal; j <= x - 1; i--, j++) {
+            newBoard[i][j] = turnChange
+          }
+          break
+        }
+
+        roopHorizontal -= 1
+        roopVertical += 1
+      }
+
+      setBoard(newBoard)
+      rightDiagonal()
+      return setBoard(newBoard)
+    }
+    //y > i, x < 1
+    function leftBottom() {
+      let roopVertical = y - 2
+      let roopHorizontal = x + 2
+      lB += 1
+      console.log(turnChange)
+      while (
+        newBoard[y - 1][x + 1] !== 0 &&
+        newBoard[y - 1][x + 1] !== turnChange &&
+        newBoard[roopVertical][roopHorizontal] !== 0
+      ) {
+        if (newBoard[roopVertical][roopHorizontal] === turnChange) {
+          for (let i = roopVertical, j = roopHorizontal; j >= x + 1; i++, j--) {
+            console.log(j)
+            newBoard[i][j] = turnChange
+          }
+          break
+        }
+
+        roopVertical -= 1
+        roopHorizontal += 1
+      }
+
+      setBoard(newBoard)
+      rightDiagonal()
+      return setBoard(newBoard)
+    }
     if (board[y][x] === 0) {
       change()
     }
