@@ -77,7 +77,8 @@ const Home: NextPage = () => {
       } else if (turnChange === 2) {
         turnChange = 1
       }
-      return setTurn(turnChange)
+      setTurn(turnChange)
+      return tapPoint()
     }
 
     //何も置いてない時だけclicした所の色を変える
@@ -355,10 +356,8 @@ const Home: NextPage = () => {
       return setBoard(newBoard)
     }
     if (board[y][x] === 0) {
-      tapPoint()
       change()
     }
-
     setBoard(newBoard)
   }
   return (
