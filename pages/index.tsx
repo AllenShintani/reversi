@@ -56,7 +56,7 @@ const Home: NextPage = () => {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ])
-  const [turn, setTurn] = useState(2)
+  const [turn, setTurn] = useState(1)
   const hit = (x: number, y: number) => {
     const newBoard: number[][] = JSON.parse(JSON.stringify(board))
 
@@ -68,6 +68,8 @@ const Home: NextPage = () => {
     let rU = 0
     let lB = 0
     let lU = 0
+    let moreThanOne = 0
+
     let turnChange = turn
 
     //ターンを変える
@@ -85,7 +87,7 @@ const Home: NextPage = () => {
       if (newBoard[y][x] === 0) {
         newBoard[y][x] = turnChange
 
-        return UpDown()
+        return change()
       }
     }
 
@@ -101,37 +103,30 @@ const Home: NextPage = () => {
     }
 
     function rightLeft() {
-      console.log(turnChange)
       if (x - 1 >= 0 && xUp === 0) {
-        console.log(turnChange)
         xUpper()
       }
       if (x + 1 <= 7 && xBt === 0) {
-        console.log(turnChange)
         xBottom()
       }
-      console.log(turnChange)
+
       rightDiagonal()
       return setBoard(newBoard)
     }
 
     function rightDiagonal() {
-      console.log(rB)
       if (rB === 0 && y - 2 >= 0 && x - 2 >= 0) {
-        console.log(turnChange)
         rightBottom()
       }
       if (rU === 0 && y + 2 <= 7 && x - 2 >= 0) {
         rightUpper()
       }
-      console.log(turnChange)
+
       leftDiagonal()
     }
 
     function leftDiagonal() {
-      console.log(turnChange)
       if (lB === 0 && y - 2 >= 0 && x + 2 <= 7) {
-        console.log(turnChange)
         leftBottom()
       }
       if (lU === 0 && y + 2 <= 7 && x + 2 <= 7) {
@@ -146,7 +141,7 @@ const Home: NextPage = () => {
     function yUpper() {
       yUp += 1
       let roop = y - 2
-      console.log(turnChange)
+
       while (
         newBoard[y - 1][x] !== turnChange &&
         newBoard[y - 1][x] !== 0 &&
@@ -158,6 +153,7 @@ const Home: NextPage = () => {
           for (; roop <= y - 1; roop++) {
             newBoard[roop][x] = turnChange
           }
+          moreThanOne += 1
           break
         }
         roop -= 1
@@ -181,6 +177,7 @@ const Home: NextPage = () => {
           for (; roop >= y + 1; roop--) {
             newBoard[roop][x] = turnChange
           }
+          moreThanOne += 1
           break
         }
         roop += 1
@@ -192,7 +189,6 @@ const Home: NextPage = () => {
 
     //x < i
     function xBottom() {
-      console.log(turnChange)
       xBt += 1
       let roop = x + 2
       while (
@@ -205,6 +201,7 @@ const Home: NextPage = () => {
           for (; roop >= x + 1; roop--) {
             newBoard[y][roop] = turnChange
           }
+          moreThanOne += 1
           break
         }
         roop += 1
@@ -217,7 +214,7 @@ const Home: NextPage = () => {
     //x > i
     function xUpper() {
       let roop = x - 2
-      console.log(turnChange)
+
       xUp += 1
       while (
         newBoard[y][x - 1] !== turnChange &&
@@ -230,12 +227,12 @@ const Home: NextPage = () => {
           for (; roop <= x - 1; roop++) {
             newBoard[y][roop] = turnChange
           }
+          moreThanOne += 1
           break
         }
         roop -= 1
       }
 
-      console.log(turnChange)
       setBoard(newBoard)
       rightLeft()
       return setBoard(newBoard)
@@ -257,6 +254,7 @@ const Home: NextPage = () => {
           for (let i = roopVertical, j = roopHorizontal; j <= x - 1; i++, j++) {
             newBoard[i][j] = turnChange
           }
+          moreThanOne += 1
           break
         }
 
@@ -285,6 +283,7 @@ const Home: NextPage = () => {
           for (let i = roopVertical, j = roopHorizontal; j <= x - 1; i--, j++) {
             newBoard[i][j] = turnChange
           }
+          moreThanOne += 1
           break
         }
 
@@ -313,6 +312,7 @@ const Home: NextPage = () => {
           for (let i = roopVertical, j = roopHorizontal; j >= x + 1; i--, j--) {
             newBoard[i][j] = turnChange
           }
+          moreThanOne += 1
           break
         }
 
@@ -330,7 +330,7 @@ const Home: NextPage = () => {
       let roopVertical = y - 2
       let roopHorizontal = x + 2
       lB += 1
-      console.log(turnChange)
+
       while (
         newBoard[y - 1][x + 1] !== 0 &&
         newBoard[y - 1][x + 1] !== turnChange &&
@@ -340,9 +340,9 @@ const Home: NextPage = () => {
       ) {
         if (newBoard[roopVertical][roopHorizontal] === turnChange) {
           for (let i = roopVertical, j = roopHorizontal; j >= x + 1; i++, j--) {
-            console.log(j)
             newBoard[i][j] = turnChange
           }
+          moreThanOne += 1
           break
         }
 
@@ -354,11 +354,19 @@ const Home: NextPage = () => {
       rightDiagonal()
       return setBoard(newBoard)
     }
-    if (board[y][x] === 0) {
-      tapPoint()
-      change()
-    }
 
+    function aleadyStone() {
+      //意志あるとこ置けない
+      if (board[y][x] === 0) {
+        UpDown()
+      }
+      //一つでもひっくり返ったら
+      if (moreThanOne > 0) {
+        tapPoint()
+      }
+      return setBoard(newBoard)
+    }
+    aleadyStone()
     setBoard(newBoard)
   }
   return (
