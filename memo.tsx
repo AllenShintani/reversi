@@ -3,36 +3,11 @@ import Head from 'next/head'
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import { pc, sp, tab } from './media'
-
-const Box = styled.div`
-  background-color: red;
-  ${sp`
-        width: 20px;
-        height: 20px;
-    `}
-  ${tab`
-        width: 50px;
-        height: 50px;
-    `}
-    ${pc`
-        width: 100px;
-        height: 100px;
-    `}
-`
-
 const Container = styled.div`
-  background-color: #e69f06;
-  ${pc`
   height: 100vh;
-  height: 100vh;
+  min-height: 100vh;
   padding: 0 0.5rem;
-`}
-  ${sp`
-    height:100vh;
-    height: 100vh;
-    padding: 0 0.5rem;
-  `}
+  background-color: #e69f06;
 `
 const Backs = styled.div`
   position: absolute;
