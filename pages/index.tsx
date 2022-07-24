@@ -1,59 +1,24 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
+
 import styled from 'styled-components'
-import { pc, sp, tab } from './media'
-
-export const App = () => <Box>レスポンシブ</Box>
-
-const Box = styled.div`
-  background-color: red;
-  ${sp`
-        width: 20px;
-        height: 20px;
-    `}
-  ${tab`
-        width: 50px;
-        height: 50px;
-    `}
-    ${pc`
-        width: 100px;
-        height: 100px;
-    `}
-`
 
 const Container = styled.div`
-  ${pc`min-width: 100vw;
+  min-width: 100vw;
   height: 100vh;
   min-height: 100vh;
   padding: 0 0.5rem;
   background-color: #e69f06;
-  `}
-  ${sp`
-      min-width: 100vw;
-  height: 100vh;
-  min-height: 100vh;
-  padding: 0 0.5rem;
-  background-color: #e69f06;
-  `}
 `
 
 const Backs = styled.div`
-  ${pc`position: absolute;
+  position: absolute;
   top: 50%;
   left: 50%;
   gap: 0;
   background-color: #07b81e;
   transform: translate(-50%, -50%);
-  `}
-  ${sp`
-    position: absolute;
-  top: 50%;
-  left: 50%;
-  gap: 0;
-  background-color: #07b81e;
-  transform: translate(-50%, -50%);
-  `}
 `
 
 const TurnPass = styled.div`
@@ -461,9 +426,6 @@ const Home: NextPage = () => {
         </tbody>
       </Backs>
       <TurnPass>
-        <Box>
-          <p>くさ</p>
-        </Box>
         <button onClick={passMyTurn}>ターンをパスする</button>
       </TurnPass>
     </Container>
