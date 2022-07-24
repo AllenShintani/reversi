@@ -6,12 +6,9 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   min-width: 100vw;
-  height: 100vh;
   min-height: 100vh;
-  padding: 0 0.5rem;
   background-color: #e69f06;
 `
-
 const Backs = styled.div`
   position: absolute;
   top: 50%;
