@@ -64,7 +64,7 @@ const CircleClear = styled.div`
 const CircleYellow = styled.div`
   width: 54px;
   height: 54px;
-  background-color: #eeff04;
+  background-color: #c9d60b;
   border-radius: 50%;
 `
 
@@ -73,10 +73,10 @@ const Home: NextPage = () => {
   const [board, setBoard] = useState ([
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 3, 0, 0, 0],
-    [0, 0, 0, 1, 2, 3, 0, 0],
-    [0, 0, 3, 2, 1, 0, 0, 0],
-    [0, 0, 0, 3, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 2, 0, 0, 0],
+    [0, 0, 0, 2, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ])
@@ -107,19 +107,19 @@ const Home: NextPage = () => {
     let lU = 0
 
     function upDown(cell: number, x: number, y: number) {
-      if (y - 1 >= 0 && yUp === 0) {
+      if (y - 1 >= 0 && yUp === 0 && board[y - 1][x] !== turn && board[y - 1][x] !== 0) {
         yUpper(cell, x, y)
       }
-      if (y + 1 <= 7 && yBt === 0) {
+      if (y + 1 <= 7 && yBt === 0 && board[y + 1][x] !== turn && board[y + 1][x] !== 0) {
         yBottom(cell, x, y)
       }
       rightLeft(cell, x, y)
     }
     function rightLeft(cell: number, x: number, y: number) {
-      if (x - 1 >= 0 && xUp === 0) {
+      if (x - 1 >= 0 && xUp === 0 && board[y][x - 1] !== turn && board[y][x - 1] !== 0) {
         xUpper(cell, x, y)
       }
-      if (x + 1 <= 7 && xBt === 0) {
+      if (x + 1 <= 7 && xBt === 0 && board[y][x + 1] !== turn && board[y][x + 1] !== 0) {
         xBottom(cell, x, y)
       }
     }
@@ -175,12 +175,7 @@ const Home: NextPage = () => {
       yUp += 1
       let roop = y - 2
 
-      while (
-        board[y - 1][x] !== turn &&
-        board[y - 1][x] !== 0 &&
-        roop >= 0 &&
-        board[roop][x] !== 0
-      ) {
+      for (; roop >= 0 && board[roop][x] !== 0; ) {
         //挟まったのを確認！roopはさかのぼる!
         if (board[roop][x] === turn) {
           moreThanOne += 1
@@ -194,14 +189,9 @@ const Home: NextPage = () => {
     //y < i
     function yBottom(cell: number, x: number, y: number) {
       yBt += 1
-
       let roop = y + 2
-      while (
-        board[y + 1][x] !== turn &&
-        board[y + 1][x] !== 0 &&
-        roop <= 7 &&
-        board[roop][x] !== 0
-      ) {
+
+      for (; roop <= 7 && board[roop][x] !== 0; ) {
         if (board[roop][x] === turn) {
           moreThanOne += 1
           break
@@ -216,12 +206,7 @@ const Home: NextPage = () => {
     function xBottom(cell: number, x: number, y: number) {
       xBt += 1
       let roop = x + 2
-      while (
-        board[y][x + 1] !== turn &&
-        board[y][x + 1] !== 0 &&
-        roop <= 7 &&
-        board[y][roop] !== 0
-      ) {
+      for (; roop <= 7 && board[y][roop] !== 0; ) {
         if (board[y][roop] === turn) {
           moreThanOne += 1
           break
@@ -236,12 +221,7 @@ const Home: NextPage = () => {
       let roop = x - 2
 
       xUp += 1
-      while (
-        board[y][x - 1] !== turn &&
-        board[y][x - 1] !== 0 &&
-        roop >= 0 &&
-        board[y][roop] !== 0
-      ) {
+      for (; roop >= 0 && board[y][roop] !== 0; ) {
         //挟まったのを確認！roopはさかのぼる!
         if (board[y][roop] === turn) {
           moreThanOne += 1
@@ -336,6 +316,9 @@ const Home: NextPage = () => {
       if (moreThanOne > 0) {
         tempolalyBoard[y][x] = 1
       }
+      if (moreThanOne === 0) {
+        tempolalyBoard[y][x] = 0
+      }
       yUp = 0
       yBt = 0
       xUp = 0
@@ -350,7 +333,7 @@ const Home: NextPage = () => {
       for (let y = 0; y <= 7; y++) {
         for (let x = 0; x <= 7; x++) {
           const cell = board[y][x]
-          if (cell == 0) {
+          if (cell === 0) {
             upDown(cell, x, y)
             stoneRight(x, y)
           }
@@ -358,7 +341,7 @@ const Home: NextPage = () => {
       }
     }
     Traverse()
-    console.log(tempolalyBoard)
+
     return tempolalyBoard
   }, [board, turn])
 
@@ -403,7 +386,7 @@ const Home: NextPage = () => {
 
     //何も置いてない時だけclicした所の色を変える
     function tapPoint() {
-      if (newBoard[y][x] === 3) {
+      if (newBoard[y][x] === 0) {
         newBoard[y][x] = turnChange
 
         return change()
@@ -663,7 +646,7 @@ const Home: NextPage = () => {
 
     function aleadyStone() {
       //意志あるとこ置けない
-      if (board[y][x] === 3) {
+      if (board[y][x] === 0) {
         UpDown()
       }
       //一つでもひっくり返ったら
@@ -671,22 +654,6 @@ const Home: NextPage = () => {
       if (moreThanOne > 0) {
         tapPoint()
       }
-    }
-
-    //光らす
-    function rightYellow() {
-      for (let vertical = 0; vertical <= 7; vertical++) {
-        for (let horizontal = 0; horizontal <= 7; horizontal++) {
-          if (newBoard[vertical][horizontal] === 3) {
-            newBoard[vertical][horizontal] = 0
-          }
-          if (candidate[vertical][horizontal] === 1 && newBoard[vertical][horizontal] === 0) {
-            console.log(newBoard)
-            newBoard[vertical][horizontal] = 3
-          }
-        }
-      }
-      return setBoard(newBoard)
     }
 
     //ここからはボードには直接関係ない
@@ -738,12 +705,13 @@ const Home: NextPage = () => {
         alert('Draw...')
       }
     }
-    console.log(candidate)
+    console.log(board)
+    console.log(x)
     aleadyStone()
     setBoard(newBoard)
     countColor()
-    rightYellow()
   }
+
   return (
     <Container>
       <Head>
@@ -756,14 +724,14 @@ const Home: NextPage = () => {
               {row.map((color, x) => (
                 <th key={x}>
                   <Grid onClick={() => hit(x, y)}>
-                    {color === 0 ? (
+                    {candidate[y][x] === 1 ? (
+                      <CircleYellow />
+                    ) : color === 0 ? (
                       <CircleClear />
                     ) : color === 1 ? (
                       <CircleBlack />
-                    ) : color === 2 ? (
-                      <CircleWhite />
                     ) : (
-                      <CircleYellow />
+                      <CircleWhite />
                     )}
                   </Grid>
                 </th>
