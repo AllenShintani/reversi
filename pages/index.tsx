@@ -403,7 +403,7 @@ const Home: NextPage = () => {
 
     //何も置いてない時だけclicした所の色を変える
     function tapPoint() {
-      if (newBoard[y][x] === 0) {
+      if (newBoard[y][x] === 3) {
         newBoard[y][x] = turnChange
 
         return change()
@@ -663,7 +663,7 @@ const Home: NextPage = () => {
 
     function aleadyStone() {
       //意志あるとこ置けない
-      if (board[y][x] === 0) {
+      if (board[y][x] === 3) {
         UpDown()
       }
       //一つでもひっくり返ったら
