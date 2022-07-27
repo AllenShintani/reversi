@@ -87,10 +87,10 @@ const Home: NextPage = () => {
     const tempolalyBoard= ([
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 1, 0, 0, 0],
-      [0, 0, 0, 0, 0, 1, 0, 0],
-      [0, 0, 1, 0, 0, 0, 0, 0],
-      [0, 0, 0, 1, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
     ])
@@ -334,15 +334,6 @@ const Home: NextPage = () => {
     //一つでもひっくり返ったら
     function stoneRight(x: number, y: number) {
       if (moreThanOne > 0) {
-        moreThanOne = 0
-        yUp = 0
-        yBt = 0
-        xUp = 0
-        xBt = 0
-        rB = 0
-        rU = 0
-        lB = 0
-        lU = 0
         tempolalyBoard[y][x] = 1
       }
       yUp = 0
@@ -684,10 +675,12 @@ const Home: NextPage = () => {
 
     //光らす
     function rightYellow() {
-      console.log(newBoard)
       for (let vertical = 0; vertical <= 7; vertical++) {
         for (let horizontal = 0; horizontal <= 7; horizontal++) {
-          if (candidate[vertical][horizontal] === 1) {
+          if (newBoard[vertical][horizontal] === 3) {
+            newBoard[vertical][horizontal] = 0
+          }
+          if (candidate[vertical][horizontal] === 1 && newBoard[vertical][horizontal] === 0) {
             console.log(newBoard)
             newBoard[vertical][horizontal] = 3
           }
@@ -721,7 +714,6 @@ const Home: NextPage = () => {
       let lastX = 0
 
       for (; lastX <= 7; lastX++) {
-        console.log()
         for (let lastY = 0; lastX <= 7 && lastY <= 7; lastY++) {
           if (newBoard[lastX][lastY] === 1) {
             black += 1
@@ -749,9 +741,8 @@ const Home: NextPage = () => {
     console.log(candidate)
     aleadyStone()
     setBoard(newBoard)
-    rightYellow()
-    console.log(newBoard)
     countColor()
+    rightYellow()
   }
   return (
     <Container>
